@@ -113,7 +113,28 @@ function renderDashboard() {
   Object.keys(difficultyLabels).forEach((difficulty) => {
     const status = document.querySelector(`[data-status-for="${difficulty}"]`);
     status.textContent = statusForGame(getGame(store, todayKey, difficulty));
+    renderDifficultyDots(difficulty, stats.byDifficulty[difficulty]?.solved || 0);
   });
+}
+
+function renderDifficultyDots(difficulty, solvedCount) {
+  const dotTrack = document.querySelector(`[data-dots-for="${difficulty}"]`);
+  if (!dotTrack) return;
+  dotTrack.innerHTML = "";
+  dotTrack.classList.toggle("empty", solvedCount === 0);
+  dotTrack.setAttribute("aria-label", `${difficultyLabels[difficulty]} solved ${solvedCount} day${solvedCount === 1 ? "" : "s"}`);
+  const displayCount = Math.min(solvedCount, 42);
+  for (let index = 0; index < displayCount; index += 1) {
+    const dot = document.createElement("span");
+    dot.className = "solve-dot";
+    dotTrack.appendChild(dot);
+  }
+  if (solvedCount > 42) {
+    const overflow = document.createElement("span");
+    overflow.className = "solve-overflow";
+    overflow.textContent = `+${solvedCount - 42}`;
+    dotTrack.appendChild(overflow);
+  }
 }
 
 function showDashboard() {

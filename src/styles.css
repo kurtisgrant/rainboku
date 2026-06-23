@@ -20,10 +20,7 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 50% -16%, rgba(255, 230, 204, 0.92), transparent 46%),
-    radial-gradient(circle at 8% 28%, rgba(255, 226, 214, 0.68), transparent 34%),
-    radial-gradient(circle at 92% 22%, rgba(224, 232, 255, 0.62), transparent 32%),
-    linear-gradient(180deg, #fffaf3 0%, #f8efe7 62%, #f7eee8 100%);
+    linear-gradient(145deg, rgba(255, 249, 240, 0.98) 0%, rgba(244, 251, 239, 0.92) 36%, rgba(246, 241, 255, 0.9) 72%, rgba(255, 246, 238, 0.98) 100%);
   color: var(--ink);
   overflow-x: hidden;
   -webkit-touch-callout: none;
@@ -107,22 +104,45 @@ h1 {
 .start-screen {
   width: min(100% - 28px, 620px);
   display: grid;
-  gap: 12px;
+  gap: 14px;
   margin-top: 8px;
 }
 
 .daily-card {
+  position: relative;
   display: grid;
   gap: 4px;
-  padding: 17px 18px;
-  border: 1px solid rgba(189, 151, 122, 0.34);
-  border-radius: 22px;
-  background: linear-gradient(135deg, rgba(255, 252, 247, 0.95), rgba(255, 246, 238, 0.72));
-  box-shadow: 0 16px 42px rgba(92, 63, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  min-height: 102px;
+  padding: 18px 19px 20px;
+  overflow: hidden;
+  border: 1px solid rgba(30, 26, 54, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 252, 0.94), rgba(250, 247, 255, 0.78)),
+    #fffdf8;
+  box-shadow: 0 18px 44px rgba(35, 28, 47, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.daily-card::after {
+  content: "";
+  position: absolute;
+  right: -24px;
+  bottom: -16px;
+  width: min(72%, 300px);
+  height: 48px;
+  background:
+    linear-gradient(90deg, #e32636 0 11%, #ff7f00 11% 22%, #ffbf00 22% 33%, #fff200 33% 44%, #7fff00 44% 55%, #00a651 55% 66%, #00bcd4 66% 77%, #0066ff 77% 88%, #7f00ff 88% 100%);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px 0 0 999px;
+  box-shadow: 0 10px 24px rgba(40, 31, 54, 0.14), inset 0 8px 16px rgba(255, 255, 255, 0.22);
+  opacity: 0.72;
+  transform: rotate(-5deg);
 }
 
 .eyebrow {
-  color: var(--muted);
+  position: relative;
+  z-index: 1;
+  color: #69617c;
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
@@ -130,8 +150,10 @@ h1 {
 }
 
 .daily-card strong {
+  position: relative;
+  z-index: 1;
   font-family: var(--display-font);
-  font-size: clamp(28px, 9vw, 46px);
+  font-size: clamp(30px, 8.8vw, 46px);
   line-height: 1;
 }
 
@@ -142,15 +164,15 @@ h1 {
 }
 
 .stat {
-  min-height: 72px;
+  min-height: 70px;
   display: grid;
   place-items: center;
   gap: 2px;
   padding: 10px;
-  border: 1px solid rgba(189, 151, 122, 0.28);
-  border-radius: 18px;
-  background: rgba(255, 252, 248, 0.72);
-  box-shadow: 0 12px 30px rgba(92, 63, 42, 0.09);
+  border: 1px solid rgba(30, 26, 54, 0.11);
+  border-radius: 8px;
+  background: rgba(255, 255, 252, 0.7);
+  box-shadow: 0 12px 28px rgba(35, 28, 47, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.88);
 }
 
 .stat span {
@@ -160,7 +182,7 @@ h1 {
 }
 
 .stat small {
-  color: var(--muted);
+  color: #6f6884;
   font-size: 12px;
   font-weight: 800;
 }
@@ -171,13 +193,51 @@ h1 {
 }
 
 .difficulty-button {
-  min-height: 76px;
+  --accent: #00a651;
+  --accent-2: #7fff00;
+  --accent-3: #00bcd4;
+  --accent-wash: rgba(0, 166, 81, 0.11);
+  --accent-shadow: rgba(0, 166, 81, 0.28);
+  --emblem-bg: #f2fff1;
+  --card-bg: rgba(255, 255, 252, 0.86);
+  min-height: 100px;
   padding: 0;
   overflow: hidden;
   text-align: left;
-  border-color: rgba(189, 151, 122, 0.34);
-  box-shadow: 0 16px 42px rgba(92, 63, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  border-color: rgba(30, 26, 54, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 16px 38px rgba(35, 28, 47, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
+}
+
+.difficulty-button[data-difficulty="easy"] {
+  --accent: #00a651;
+  --accent-2: #7fff00;
+  --accent-3: #00bcd4;
+  --accent-wash: rgba(0, 166, 81, 0.11);
+  --accent-shadow: rgba(0, 166, 81, 0.28);
+  --emblem-bg: #f2fff1;
+  --card-bg: rgba(249, 255, 244, 0.86);
+}
+
+.difficulty-button[data-difficulty="medium"] {
+  --accent: #ff7f00;
+  --accent-2: #ffbf00;
+  --accent-3: #e32636;
+  --accent-wash: rgba(255, 127, 0, 0.12);
+  --accent-shadow: rgba(255, 127, 0, 0.3);
+  --emblem-bg: #fff7e8;
+  --card-bg: rgba(255, 250, 239, 0.88);
+}
+
+.difficulty-button[data-difficulty="hard"] {
+  --accent: #7f00ff;
+  --accent-2: #0066ff;
+  --accent-3: #e32636;
+  --accent-wash: rgba(127, 0, 255, 0.12);
+  --accent-shadow: rgba(127, 0, 255, 0.28);
+  --emblem-bg: #f7f1ff;
+  --card-bg: rgba(249, 246, 255, 0.88);
 }
 
 .difficulty-button:active {
@@ -187,34 +247,150 @@ h1 {
 .difficulty-content {
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 14px;
-  min-height: 76px;
-  padding: 14px 15px;
-  background: linear-gradient(90deg, rgba(255, 252, 247, 0.95), rgba(255, 246, 238, 0.72));
+  align-items: stretch;
+  gap: 12px;
+  min-height: 100px;
+  padding: 14px;
+  background:
+    linear-gradient(90deg, var(--card-bg), rgba(255, 255, 255, 0.54)),
+    linear-gradient(90deg, var(--accent-wash), transparent 46%);
+}
+
+.difficulty-main {
+  min-width: 0;
+  display: grid;
+  align-content: center;
 }
 
 .difficulty-name {
   display: block;
-  font-size: 22px;
+  font-size: 23px;
   font-weight: 760;
   line-height: 1.1;
 }
 
 .difficulty-meta {
   display: block;
-  color: var(--muted);
+  color: #6f6884;
   font-size: 14px;
   margin-top: 4px;
 }
 
-.mini-rainbow {
+.difficulty-history {
+  width: 104px;
+  display: grid;
+  grid-template-columns: repeat(7, 10px);
+  grid-auto-rows: 10px;
+  gap: 5px;
+  margin-top: 13px;
+}
+
+.solve-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 3px 8px var(--accent-shadow);
+}
+
+.solve-dot:nth-child(3n) {
+  background: linear-gradient(135deg, var(--accent-2), var(--accent-3));
+}
+
+.solve-overflow {
+  min-width: 22px;
+  height: 14px;
+  display: grid;
+  place-items: center;
+  color: #4e4864;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.difficulty-emblem {
+  position: relative;
+  align-self: center;
   width: 78px;
-  height: 36px;
+  height: 70px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.82);
-  background: linear-gradient(90deg, #e32636, #ff7f00, #ffbf00, #fff200, #7fff00, #00a651, #00bcd4, #0066ff, #7f00ff);
-  box-shadow: inset 0 0 0 1px rgba(34, 28, 24, 0.08), 0 8px 20px rgba(60, 42, 31, 0.12);
+  background: var(--emblem-bg);
+  box-shadow: inset 0 0 0 1px rgba(34, 28, 24, 0.08), 0 10px 24px rgba(35, 28, 47, 0.12);
+}
+
+.difficulty-emblem::before,
+.difficulty-emblem::after {
+  content: "";
+  position: absolute;
+}
+
+.difficulty-button[data-difficulty="easy"] .difficulty-emblem::before {
+  left: 12px;
+  top: 18px;
+  width: 52px;
+  height: 28px;
+  border: 8px solid var(--accent);
+  border-bottom: 0;
+  border-radius: 52px 52px 0 0;
+  box-shadow: 0 -10px 0 -4px var(--accent-2), 0 10px 0 -4px rgba(0, 188, 212, 0.78);
+}
+
+.difficulty-button[data-difficulty="easy"] .difficulty-emblem::after {
+  right: 14px;
+  bottom: 12px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--accent-3);
+}
+
+.difficulty-button[data-difficulty="medium"] .difficulty-emblem {
+  background:
+    linear-gradient(135deg, #fff1dd, #fffdf8);
+}
+
+.difficulty-button[data-difficulty="medium"] .difficulty-emblem::before {
+  left: 13px;
+  top: 12px;
+  width: 20px;
+  height: 46px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  box-shadow: 18px 6px 0 #ee6670, 36px -2px 0 #5e91ff;
+}
+
+.difficulty-button[data-difficulty="medium"] .difficulty-emblem::after {
+  left: 17px;
+  right: 17px;
+  bottom: 10px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(25, 23, 53, 0.18);
+}
+
+.difficulty-button[data-difficulty="hard"] .difficulty-emblem {
+  background:
+    linear-gradient(145deg, #efe0ff, #f8f3ff);
+}
+
+.difficulty-button[data-difficulty="hard"] .difficulty-emblem::before {
+  left: 16px;
+  top: 12px;
+  width: 46px;
+  height: 46px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2) 58%, var(--accent-3));
+  clip-path: polygon(50% 0, 92% 24%, 78% 84%, 50% 100%, 22% 84%, 8% 24%);
+  box-shadow: 0 12px 22px rgba(54, 34, 98, 0.24);
+}
+
+.difficulty-button[data-difficulty="hard"] .difficulty-emblem::after {
+  left: 31px;
+  top: 20px;
+  width: 16px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.34);
+  clip-path: polygon(50% 0, 100% 22%, 66% 100%, 34% 100%, 0 22%);
 }
 
 .game-screen {
