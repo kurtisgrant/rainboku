@@ -16,6 +16,14 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.icon-sprite {
+  display: none;
+}
+
+svg {
+  display: block;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -171,34 +179,23 @@ h1::after {
   z-index: 1;
   width: 54px;
   height: 54px;
+  display: grid;
+  place-items: center;
   border-radius: 999px;
   background: rgba(250, 247, 241, 0.88);
   border: 1px solid rgba(30, 26, 54, 0.08);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92), 0 10px 24px rgba(35, 28, 47, 0.08);
 }
 
-.date-icon::before {
-  content: "";
-  position: absolute;
-  left: 14px;
-  top: 15px;
-  width: 26px;
-  height: 24px;
-  border: 4px solid #171a48;
-  border-radius: 6px;
-  box-shadow: inset 0 8px 0 rgba(23, 26, 72, 0.12);
-}
-
-.date-icon::after {
-  content: "";
-  position: absolute;
-  left: 20px;
-  top: 28px;
-  width: 4px;
-  height: 4px;
-  border-radius: 999px;
-  background: #171a48;
-  box-shadow: 9px 0 0 #171a48, 18px 0 0 #171a48, 0 9px 0 #171a48, 9px 9px 0 #171a48;
+.date-icon svg {
+  width: 31px;
+  height: 31px;
+  color: #171a48;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .date-copy {
@@ -267,77 +264,35 @@ h1::after {
   position: relative;
   width: 42px;
   height: 42px;
+  display: grid;
+  place-items: center;
   margin-bottom: 4px;
   border-radius: 999px;
   background: #edf8df;
 }
 
-.stat-icon::before,
-.stat-icon::after {
-  content: "";
-  position: absolute;
-}
-
-.streak-icon::before {
-  left: 15px;
-  top: 8px;
-  width: 14px;
+.stat-icon svg {
+  width: 25px;
   height: 25px;
-  border: 4px solid #5c9b32;
-  border-left-color: transparent;
-  border-bottom-color: transparent;
-  border-radius: 16px 16px 12px 4px;
-  transform: rotate(20deg);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.streak-icon::after {
-  left: 19px;
-  top: 18px;
-  width: 12px;
-  height: 16px;
-  border-left: 3px solid #5c9b32;
-  border-bottom: 3px solid #5c9b32;
-  border-radius: 0 0 0 10px;
-  transform: rotate(-24deg);
+.streak-icon {
+  color: #5c9b32;
 }
 
 .record-icon {
+  color: #3f7fe8;
   background: #dfecff;
 }
 
-.record-icon::before {
-  left: 12px;
-  top: 10px;
-  width: 16px;
-  height: 18px;
-  border: 4px solid #3f7fe8;
-  border-top-width: 5px;
-  border-radius: 4px 4px 8px 8px;
-  box-shadow: -8px 3px 0 -5px #3f7fe8, 8px 3px 0 -5px #3f7fe8;
-}
-
-.record-icon::after {
-  left: 18px;
-  top: 27px;
-  width: 6px;
-  height: 9px;
-  background: #3f7fe8;
-  box-shadow: -7px 9px 0 -2px #3f7fe8, 7px 9px 0 -2px #3f7fe8;
-}
-
 .solved-icon {
+  color: #7f3be8;
   background: #f1e5ff;
-}
-
-.solved-icon::before {
-  left: 9px;
-  top: 8px;
-  width: 20px;
-  height: 20px;
-  border: 0;
-  clip-path: polygon(50% 0, 64% 34%, 100% 36%, 72% 58%, 82% 96%, 50% 75%, 18% 96%, 28% 58%, 0 36%, 36% 34%);
-  background: #7f3be8;
-  transform: scale(1.18);
 }
 
 .stat > span:not(.stat-icon) {
@@ -553,98 +508,44 @@ h1::after {
   z-index: 1;
   width: 56px;
   height: 56px;
+  display: grid;
+  place-items: center;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow: 0 12px 24px rgba(35, 28, 47, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
-.difficulty-badge::before,
-.difficulty-badge::after {
-  content: "";
-  position: absolute;
-}
-
-.difficulty-button[data-difficulty="easy"] .difficulty-badge::before {
-  left: 18px;
-  top: 15px;
-  width: 22px;
-  height: 28px;
-  border: 4px solid #3b982a;
-  border-top-left-radius: 80%;
-  border-bottom-right-radius: 80%;
-  border-right-width: 5px;
-  transform: rotate(42deg);
-}
-
-.difficulty-button[data-difficulty="easy"] .difficulty-badge::after {
-  left: 18px;
-  top: 30px;
-  width: 24px;
-  height: 4px;
-  border-radius: 999px;
-  background: #3b982a;
-  transform: rotate(-36deg);
-}
-
-.difficulty-button[data-difficulty="medium"] .difficulty-badge::before {
-  left: 26px;
-  top: 13px;
-  width: 4px;
-  height: 32px;
-  border-radius: 999px;
-  background: #d45a00;
-  box-shadow: -9px 30px 0 -1px #d45a00, 9px 30px 0 -1px #d45a00;
-}
-
-.difficulty-button[data-difficulty="medium"] .difficulty-badge::after {
-  left: 11px;
-  top: 20px;
-  width: 34px;
-  height: 4px;
-  background: #d45a00;
-  border-radius: 999px;
-  box-shadow: -5px 15px 0 -1px #d45a00, 5px 15px 0 -1px #d45a00;
-}
-
-.difficulty-button[data-difficulty="hard"] .difficulty-badge::before {
-  left: 13px;
-  top: 13px;
-  width: 30px;
-  height: 30px;
-  background: transparent;
-  border: 4px solid #4b2fd0;
-  clip-path: polygon(50% 0, 100% 34%, 76% 100%, 24% 100%, 0 34%);
-}
-
-.difficulty-button[data-difficulty="hard"] .difficulty-badge::after {
-  left: 22px;
-  top: 21px;
-  width: 14px;
-  height: 24px;
-  background: rgba(75, 47, 208, 0.18);
-  clip-path: polygon(50% 0, 100% 25%, 62% 100%, 38% 100%, 0 25%);
+.difficulty-badge svg {
+  width: 31px;
+  height: 31px;
+  color: var(--name-color);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .difficulty-arrow {
   position: relative;
   width: 50px;
   height: 50px;
+  display: grid;
+  place-items: center;
   border-radius: 999px;
   background: var(--accent-wash);
 }
 
-.difficulty-arrow::before {
-  content: "";
-  position: absolute;
-  left: 18px;
-  top: 14px;
-  width: 16px;
-  height: 16px;
-  border-top: 5px solid var(--name-color);
-  border-right: 5px solid var(--name-color);
-  transform: rotate(45deg);
-  border-radius: 2px;
+.difficulty-arrow svg {
+  width: 27px;
+  height: 27px;
+  color: var(--name-color);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .game-screen {

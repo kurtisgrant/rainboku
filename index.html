@@ -7,6 +7,37 @@
   <link rel="stylesheet" href="./src/styles.css" />
 </head>
 <body>
+  <svg class="icon-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-calendar" viewBox="0 0 24 24">
+      <path d="M8 2v4M16 2v4M4 9h16M6 4h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
+      <path d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01" />
+    </symbol>
+    <symbol id="icon-flame" viewBox="0 0 24 24">
+      <path d="M8.5 14.5c0-2.8 2.3-4.4 2.1-7.7 2.7 1.4 5.1 4.1 5.1 7.7 0 3.1-2 5.5-4.6 5.5-2.2 0-3.8-1.8-3.8-4.1 0-1.2.5-2.4 1.2-3.2v1.8Z" />
+      <path d="M12.6 20c2.5-.7 4.4-2.9 4.4-6.2 0-2.1-.8-4.3-2.8-6.2C13.3 4.9 11.7 3 9.5 2c.7 3.7-3.5 5.7-3.5 10.4 0 4 2.7 7.1 6.6 7.6Z" />
+    </symbol>
+    <symbol id="icon-trophy" viewBox="0 0 24 24">
+      <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z" />
+      <path d="M8 6H5a2 2 0 0 0 0 4h3M16 6h3a2 2 0 0 1 0 4h-3M12 13v5M9 22h6M10 18h4" />
+    </symbol>
+    <symbol id="icon-star" viewBox="0 0 24 24">
+      <path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1-4.4-4.3 6.1-.9L12 3Z" />
+    </symbol>
+    <symbol id="icon-leaf" viewBox="0 0 24 24">
+      <path d="M20 4C12 4 5 9.5 5 17a4 4 0 0 0 4 4c7.5 0 11-8.3 11-17Z" />
+      <path d="M5 21c3.4-5.5 7.2-8.7 12-11" />
+    </symbol>
+    <symbol id="icon-scale" viewBox="0 0 24 24">
+      <path d="M12 3v18M6 7h12M7 7l-4 7h8L7 7ZM17 7l-4 7h8l-4-7ZM9 21h6" />
+    </symbol>
+    <symbol id="icon-gem" viewBox="0 0 24 24">
+      <path d="M6 3h12l4 6-10 12L2 9l4-6Z" />
+      <path d="M2 9h20M8 3l-2 6 6 12 6-12-2-6" />
+    </symbol>
+    <symbol id="icon-chevron-right" viewBox="0 0 24 24">
+      <path d="m9 5 7 7-7 7" />
+    </symbol>
+  </svg>
   <main class="app" aria-labelledby="game-title">
     <header class="topbar">
       <h1 id="game-title">Rainbo<span>ku</span></h1>
@@ -15,7 +46,9 @@
 
     <section class="screen start-screen" id="dashboardScreen" aria-label="Daily Rainboku dashboard">
       <div class="daily-card">
-        <span class="date-icon" aria-hidden="true"></span>
+        <span class="date-icon" aria-hidden="true">
+          <svg><use href="#icon-calendar"></use></svg>
+        </span>
         <span class="date-copy">
           <span class="eyebrow">Daily puzzle</span>
           <strong id="dateLabel">Today</strong>
@@ -24,17 +57,23 @@
 
       <div class="stats-grid" aria-label="Stats">
         <div class="stat">
-          <span class="stat-icon streak-icon" aria-hidden="true"></span>
+          <span class="stat-icon streak-icon" aria-hidden="true">
+            <svg><use href="#icon-flame"></use></svg>
+          </span>
           <span id="currentStreak">0</span>
           <small>Streak</small>
         </div>
         <div class="stat">
-          <span class="stat-icon record-icon" aria-hidden="true"></span>
+          <span class="stat-icon record-icon" aria-hidden="true">
+            <svg><use href="#icon-trophy"></use></svg>
+          </span>
           <span id="bestStreak">0</span>
           <small>Record</small>
         </div>
         <div class="stat">
-          <span class="stat-icon solved-icon" aria-hidden="true"></span>
+          <span class="stat-icon solved-icon" aria-hidden="true">
+            <svg><use href="#icon-star"></use></svg>
+          </span>
           <span id="totalSolved">0</span>
           <small>Solved</small>
         </div>
@@ -44,40 +83,52 @@
         <button class="difficulty-button" type="button" data-difficulty="easy">
           <span class="difficulty-content">
             <span class="difficulty-art" aria-hidden="true">
-              <span class="difficulty-badge"></span>
+              <span class="difficulty-badge">
+                <svg><use href="#icon-leaf"></use></svg>
+              </span>
             </span>
             <span class="difficulty-main">
               <span class="difficulty-name">Easy</span>
               <span class="difficulty-meta" data-status-for="easy">Not started</span>
               <span class="difficulty-history" data-dots-for="easy" aria-label="Easy solved days"></span>
             </span>
-            <span class="difficulty-arrow" aria-hidden="true"></span>
+            <span class="difficulty-arrow" aria-hidden="true">
+              <svg><use href="#icon-chevron-right"></use></svg>
+            </span>
           </span>
         </button>
         <button class="difficulty-button" type="button" data-difficulty="medium">
           <span class="difficulty-content">
             <span class="difficulty-art" aria-hidden="true">
-              <span class="difficulty-badge"></span>
+              <span class="difficulty-badge">
+                <svg><use href="#icon-scale"></use></svg>
+              </span>
             </span>
             <span class="difficulty-main">
               <span class="difficulty-name">Medium</span>
               <span class="difficulty-meta" data-status-for="medium">Not started</span>
               <span class="difficulty-history" data-dots-for="medium" aria-label="Medium solved days"></span>
             </span>
-            <span class="difficulty-arrow" aria-hidden="true"></span>
+            <span class="difficulty-arrow" aria-hidden="true">
+              <svg><use href="#icon-chevron-right"></use></svg>
+            </span>
           </span>
         </button>
         <button class="difficulty-button" type="button" data-difficulty="hard">
           <span class="difficulty-content">
             <span class="difficulty-art" aria-hidden="true">
-              <span class="difficulty-badge"></span>
+              <span class="difficulty-badge">
+                <svg><use href="#icon-gem"></use></svg>
+              </span>
             </span>
             <span class="difficulty-main">
               <span class="difficulty-name">Hard</span>
               <span class="difficulty-meta" data-status-for="hard">Not started</span>
               <span class="difficulty-history" data-dots-for="hard" aria-label="Hard solved days"></span>
             </span>
-            <span class="difficulty-arrow" aria-hidden="true"></span>
+            <span class="difficulty-arrow" aria-hidden="true">
+              <svg><use href="#icon-chevron-right"></use></svg>
+            </span>
           </span>
         </button>
       </div>
