@@ -123,10 +123,10 @@ function renderDifficultyDots(difficulty, solvedCount) {
   dotTrack.innerHTML = "";
   dotTrack.classList.toggle("empty", solvedCount === 0);
   dotTrack.setAttribute("aria-label", `${difficultyLabels[difficulty]} solved ${solvedCount} day${solvedCount === 1 ? "" : "s"}`);
-  const displayCount = Math.min(solvedCount, 42);
+  const displayCount = Math.max(7, Math.min(solvedCount, 42));
   for (let index = 0; index < displayCount; index += 1) {
     const dot = document.createElement("span");
-    dot.className = "solve-dot";
+    dot.className = index < solvedCount ? "solve-dot filled" : "solve-dot";
     dotTrack.appendChild(dot);
   }
   if (solvedCount > 42) {

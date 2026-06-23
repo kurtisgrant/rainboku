@@ -9,26 +9,32 @@
 <body>
   <main class="app" aria-labelledby="game-title">
     <header class="topbar">
-      <h1 id="game-title">Rainboku</h1>
+      <h1 id="game-title">Rainbo<span>ku</span></h1>
       <button class="ghost-button" id="menuButton" type="button" hidden>Today</button>
     </header>
 
     <section class="screen start-screen" id="dashboardScreen" aria-label="Daily Rainboku dashboard">
       <div class="daily-card">
-        <span class="eyebrow">Daily puzzle</span>
-        <strong id="dateLabel">Today</strong>
+        <span class="date-icon" aria-hidden="true"></span>
+        <span class="date-copy">
+          <span class="eyebrow">Daily puzzle</span>
+          <strong id="dateLabel">Today</strong>
+        </span>
       </div>
 
       <div class="stats-grid" aria-label="Stats">
         <div class="stat">
+          <span class="stat-icon streak-icon" aria-hidden="true"></span>
           <span id="currentStreak">0</span>
           <small>Streak</small>
         </div>
         <div class="stat">
+          <span class="stat-icon record-icon" aria-hidden="true"></span>
           <span id="bestStreak">0</span>
           <small>Record</small>
         </div>
         <div class="stat">
+          <span class="stat-icon solved-icon" aria-hidden="true"></span>
           <span id="totalSolved">0</span>
           <small>Solved</small>
         </div>
@@ -37,32 +43,41 @@
       <div class="difficulty-list" id="difficultyList">
         <button class="difficulty-button" type="button" data-difficulty="easy">
           <span class="difficulty-content">
+            <span class="difficulty-art" aria-hidden="true">
+              <span class="difficulty-badge"></span>
+            </span>
             <span class="difficulty-main">
               <span class="difficulty-name">Easy</span>
               <span class="difficulty-meta" data-status-for="easy">Not started</span>
               <span class="difficulty-history" data-dots-for="easy" aria-label="Easy solved days"></span>
             </span>
-            <span class="difficulty-emblem" aria-hidden="true"></span>
+            <span class="difficulty-arrow" aria-hidden="true"></span>
           </span>
         </button>
         <button class="difficulty-button" type="button" data-difficulty="medium">
           <span class="difficulty-content">
+            <span class="difficulty-art" aria-hidden="true">
+              <span class="difficulty-badge"></span>
+            </span>
             <span class="difficulty-main">
               <span class="difficulty-name">Medium</span>
               <span class="difficulty-meta" data-status-for="medium">Not started</span>
               <span class="difficulty-history" data-dots-for="medium" aria-label="Medium solved days"></span>
             </span>
-            <span class="difficulty-emblem" aria-hidden="true"></span>
+            <span class="difficulty-arrow" aria-hidden="true"></span>
           </span>
         </button>
         <button class="difficulty-button" type="button" data-difficulty="hard">
           <span class="difficulty-content">
+            <span class="difficulty-art" aria-hidden="true">
+              <span class="difficulty-badge"></span>
+            </span>
             <span class="difficulty-main">
               <span class="difficulty-name">Hard</span>
               <span class="difficulty-meta" data-status-for="hard">Not started</span>
               <span class="difficulty-history" data-dots-for="hard" aria-label="Hard solved days"></span>
             </span>
-            <span class="difficulty-emblem" aria-hidden="true"></span>
+            <span class="difficulty-arrow" aria-hidden="true"></span>
           </span>
         </button>
       </div>
