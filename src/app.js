@@ -23,11 +23,13 @@ const wheelOptions = [
 ];
 
 const todayKey = localDateKey();
+const labelColoursKey = "rainboku.labelColours.v1";
 let store = loadStore();
 let activeDifficulty = null;
 let activePuzzle = null;
 let board = [];
 let givens = [];
+let labelColours = loadLabelColours();
 let activeCell = null;
 let dragState = null;
 let previewIndex = null;
@@ -49,6 +51,8 @@ const boardEl = document.querySelector("#board");
 const menuButton = document.querySelector("#menuButton");
 const resetButton = document.querySelector("#resetButton");
 const shareButton = document.querySelector("#shareButton");
+const labelColoursToggle = document.querySelector("#labelColoursToggle");
+const labelColoursText = document.querySelector("#labelColoursText");
 const difficultyLabel = document.querySelector("#difficultyLabel");
 const statusText = document.querySelector("#statusText");
 const dateLabel = document.querySelector("#dateLabel");
@@ -69,6 +73,9 @@ const canvas = document.querySelector("#confettiCanvas");
 const ctx = canvas.getContext("2d");
 
 dateLabel.textContent = prettyDate(todayKey);
+labelColoursText.textContent = labelColoursCopy();
+labelColoursToggle.checked = labelColours;
+boardEl.classList.toggle("label-colours", labelColours);
 buildWheel();
 buildColourBar();
 renderDashboard();
@@ -98,6 +105,11 @@ confirmResetButton.addEventListener("click", () => {
   startGame(difficulty, { skipSave: true });
 });
 shareButton.addEventListener("click", shareResult);
+labelColoursToggle.addEventListener("change", () => {
+  labelColours = labelColoursToggle.checked;
+  saveLabelColours(labelColours);
+  boardEl.classList.toggle("label-colours", labelColours);
+});
 closeShareButton.addEventListener("click", () => {
   shareModal.hidden = true;
 });
@@ -142,7 +154,7 @@ function dashboardStatusForGame(game, bestMs) {
   } else if ((game?.board || []).some((value) => value !== 0)) {
     status = "In progress";
   }
-  return bestText ? `${status} · ${bestText}` : status;
+  return bestText ? `${status} - ${bestText}` : status;
 }
 
 function renderDifficultyDots(difficulty, solvedCount) {
@@ -220,6 +232,7 @@ function startGame(difficulty, options = {}) {
 
 function renderBoard() {
   boardEl.innerHTML = "";
+  boardEl.classList.toggle("label-colours", labelColours);
   board.forEach((value, index) => {
     const row = Math.floor(index / 9);
     const col = index % 9;
@@ -232,6 +245,10 @@ function renderBoard() {
     if (value) {
       cell.style.background = colours[value - 1].hex;
       cell.classList.add("filled");
+      const label = document.createElement("span");
+      label.className = "cell-label";
+      label.textContent = colours[value - 1].name.charAt(0).toUpperCase();
+      cell.appendChild(label);
     }
     if (givens[index]) {
       cell.classList.add("given");
@@ -708,4 +725,25 @@ function resizeCanvas() {
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
+}
+
+function loadLabelColours() {
+  try {
+    return localStorage.getItem(labelColoursKey) === "true";
+  } catch {
+    return false;
+  }
+}
+
+function saveLabelColours(value) {
+  try {
+    localStorage.setItem(labelColoursKey, value ? "true" : "false");
+  } catch {
+    // Ignore private browsing or full storage failures.
+  }
+}
+
+function labelColoursCopy() {
+  const locale = navigator.language || "";
+  return /^en-US\b/i.test(locale) ? "Label Colors" : "Label Colours";
 }
