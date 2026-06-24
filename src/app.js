@@ -437,8 +437,8 @@ function checkWin() {
   if (winShown || board.some((value) => value === 0)) return;
   if (!isSolvedBoard(board)) return;
   const previousStats = computeStats(loadStore(), todayKey);
-  winShown = true;
   elapsedMs = currentElapsed();
+  winShown = true;
   statusText.textContent = `Solved ${formatDuration(elapsedMs)}`;
   shareButton.hidden = false;
   saveActiveGame();

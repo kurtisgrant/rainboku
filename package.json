@@ -1,6 +1,6 @@
 {
   "type": "module",
   "scripts": {
-    "test": "node scripts/verify-daily.mjs"
+    "test": "node scripts/verify-daily.mjs && node scripts/verify-timer-order.mjs"
   }
 }
