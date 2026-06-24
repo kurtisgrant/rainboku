@@ -58,14 +58,16 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 10px;
 }
 
 h1 {
   position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
   margin: 0;
   font-family: var(--display-font);
-  font-size: clamp(58px, 17vw, 104px);
+  font-size: clamp(46px, 13.5vw, 88px);
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0;
@@ -107,6 +109,7 @@ h1::after {
 }
 
 .ghost-button {
+  flex: 0 0 auto;
   padding: 11px 17px;
   font-weight: 700;
   min-height: 42px;
