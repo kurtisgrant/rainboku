@@ -1,13 +1,13 @@
 export const colours = [
   { name: "Red", hex: "#e32636" },
   { name: "Orange", hex: "#ff7f00" },
-  { name: "Pink", hex: "#ff4fa3" },
   { name: "Yellow", hex: "#ffd21a" },
   { name: "Lime", hex: "#7fff00" },
   { name: "Green", hex: "#00a651" },
   { name: "Cyan", hex: "#00bcd4" },
   { name: "Blue", hex: "#0066ff" },
-  { name: "Violet", hex: "#7f00ff" }
+  { name: "Violet", hex: "#7f00ff" },
+  { name: "Pink", hex: "#ff4fa3" }
 ];
 
 export const difficultyLabels = {

@@ -499,7 +499,7 @@ async function shareResult() {
     `Rainboku ${todayKey} ${difficultyLabels[activeDifficulty]}`,
     `Solved in ${formatDuration(elapsedMs)}`,
     `Streak ${stats.currentStreak}`,
-    "Palette ROPYLGCBV"
+    "Palette ROYLGCBVP"
   ].join("\n");
   try {
     await navigator.clipboard.writeText(text);
