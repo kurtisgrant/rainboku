@@ -44,6 +44,7 @@ let confettiFrame = null;
 let particles = [];
 const colourBarCycleMs = 12630;
 const dragCommitDistance = 16;
+let suppressClicksUntil = 0;
 
 const dashboardScreen = document.querySelector("#dashboardScreen");
 const gameScreen = document.querySelector("#gameScreen");
@@ -113,6 +114,12 @@ labelColoursToggle.addEventListener("change", () => {
 closeShareButton.addEventListener("click", () => {
   shareModal.hidden = true;
 });
+
+document.addEventListener("click", (event) => {
+  if (Date.now() > suppressClicksUntil) return;
+  event.preventDefault();
+  event.stopPropagation();
+}, true);
 
 document.addEventListener("pointerdown", (event) => {
   if (!wheel.classList.contains("visible")) return;
@@ -318,7 +325,12 @@ function buildWheel() {
     button.addEventListener("pointerdown", (event) => {
       event.preventDefault();
       event.stopPropagation();
+      suppressFollowUpClick();
       commitOption(index);
+    });
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
     });
     wheel.appendChild(button);
   });
@@ -377,6 +389,7 @@ function handleDragEnd(event) {
   if (!dragState || event.pointerId !== dragState.pointerId) return;
   const index = optionIndexAtPoint(event.clientX, event.clientY);
   if (dragState.moved && index !== null) {
+    suppressFollowUpClick();
     commitOption(index);
     return;
   }
@@ -457,6 +470,10 @@ function commitOption(index) {
   if (conflicts.size) conflictCount += 1;
   checkWin();
   saveActiveGame();
+}
+
+function suppressFollowUpClick() {
+  suppressClicksUntil = Date.now() + 450;
 }
 
 function updateConflicts() {
