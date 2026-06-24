@@ -714,28 +714,18 @@ h1::after {
 
 .board.label-colours .cell.given::after {
   left: auto;
-  right: clamp(5px, 1.4vw, 9px);
-  top: clamp(5px, 1.4vw, 9px);
-  width: clamp(9px, 2.8vw, 16px);
-  height: clamp(9px, 2.8vw, 16px);
-  border-top: 3px solid rgba(255, 255, 255, 0.95);
-  border-right: 3px solid rgba(255, 255, 255, 0.95);
+  right: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 clamp(16px, 4.2vw, 28px) clamp(16px, 4.2vw, 28px) 0;
+  border-color: transparent rgba(255, 255, 255, 0.96) transparent transparent;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+  filter: drop-shadow(0 2px 4px rgba(37, 24, 18, 0.18));
   transform: none;
-}
-
-.board.label-colours .cell.given::before {
-  content: "";
-  position: absolute;
-  left: clamp(5px, 1.4vw, 9px);
-  bottom: clamp(5px, 1.4vw, 9px);
-  width: clamp(9px, 2.8vw, 16px);
-  height: clamp(9px, 2.8vw, 16px);
-  border-bottom: 3px solid rgba(255, 255, 255, 0.95);
-  border-left: 3px solid rgba(255, 255, 255, 0.95);
-  pointer-events: none;
 }
 
 .cell.filled {
