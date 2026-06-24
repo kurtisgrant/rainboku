@@ -259,6 +259,7 @@ function renderBoard() {
     cell.addEventListener("pointerdown", handleCellPointerDown);
     boardEl.appendChild(cell);
   });
+  updateColourCounts();
 }
 
 function labelForCell(index, value) {
@@ -635,14 +636,38 @@ function trackSolved(stats) {
 
 function buildColourBar() {
   reelStrip.innerHTML = "";
-  colours.forEach((colour) => {
+  colours.forEach((colour, index) => {
     const panel = document.createElement("div");
     panel.className = "reel-panel";
-    panel.textContent = colour.name;
+    panel.dataset.colourValue = String(index + 1);
     panel.style.background = colour.hex;
+
+    const count = document.createElement("span");
+    count.className = "reel-count";
+    count.textContent = "0";
+
+    const name = document.createElement("span");
+    name.className = "reel-name";
+    name.textContent = colour.name;
+
+    panel.append(count, name);
     reelStrip.appendChild(panel);
   });
+  updateColourCounts();
   startColourBar();
+}
+
+function updateColourCounts() {
+  const counts = Array(colours.length).fill(0);
+  board.forEach((value) => {
+    if (value >= 1 && value <= colours.length) counts[value - 1] += 1;
+  });
+  reelStrip.querySelectorAll(".reel-panel").forEach((panel) => {
+    const value = Number(panel.dataset.colourValue);
+    const count = counts[value - 1] || 0;
+    const countEl = panel.querySelector(".reel-count");
+    if (countEl) countEl.textContent = count === 9 ? "✓" : String(count);
+  });
 }
 
 function startColourBar() {
