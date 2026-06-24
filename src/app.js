@@ -16,6 +16,7 @@ import {
   statusForGame,
   upsertGame
 } from "./storage.js";
+import { setUserStats, streakBucket, trackEvent } from "./analytics.js";
 
 const wheelOptions = [
   ...colours.map((colour, index) => ({ ...colour, value: index + 1 })),
@@ -81,6 +82,13 @@ cancelResetButton.addEventListener("click", () => {
 confirmResetButton.addEventListener("click", () => {
   if (!activeDifficulty) return;
   const difficulty = activeDifficulty;
+  trackEvent("reset_puzzle", {
+    difficulty,
+    date_key: todayKey,
+    puzzle_id: activePuzzle?.id,
+    elapsed_seconds: Math.floor(currentElapsed() / 1000),
+    conflict_count: conflictCount
+  });
   resetModal.hidden = true;
   resetGame(store, todayKey, difficulty);
   startGame(difficulty, { skipSave: true });
@@ -107,6 +115,7 @@ function renderDashboard() {
   closeWheel();
   store = loadStore();
   const stats = computeStats(store, todayKey);
+  setAnalyticsUserStats(stats);
   currentStreak.textContent = String(stats.currentStreak);
   bestStreak.textContent = String(stats.bestStreak);
   totalSolved.textContent = String(stats.totalSolved);
@@ -180,6 +189,13 @@ function startGame(difficulty, options = {}) {
   updateConflicts();
   startTimer();
   saveActiveGame();
+  trackEvent("puzzle_start", {
+    difficulty,
+    date_key: todayKey,
+    puzzle_id: activePuzzle.id,
+    puzzle_seed: activePuzzle.seed,
+    resumed: Boolean(saved)
+  });
 }
 
 function renderBoard() {
@@ -420,11 +436,23 @@ function updateConflicts() {
 function checkWin() {
   if (winShown || board.some((value) => value === 0)) return;
   if (!isSolvedBoard(board)) return;
+  const previousStats = computeStats(loadStore(), todayKey);
   winShown = true;
   elapsedMs = currentElapsed();
   statusText.textContent = `Solved ${formatDuration(elapsedMs)}`;
   shareButton.hidden = false;
   saveActiveGame();
+  const stats = computeStats(loadStore(), todayKey);
+  setAnalyticsUserStats(stats);
+  trackSolved(stats);
+  if (stats.bestStreak > previousStats.bestStreak) {
+    trackEvent("streak_record_reached", {
+      record_streak: stats.bestStreak,
+      record_streak_label: String(stats.bestStreak),
+      streak_bucket: streakBucket(stats.bestStreak),
+      date_key: todayKey
+    });
+  }
   celebrate();
 }
 
@@ -466,10 +494,11 @@ function saveActiveGame() {
 
 async function shareResult() {
   if (!activePuzzle || !activeDifficulty || !winShown) return;
+  const stats = computeStats(loadStore(), todayKey);
   const text = [
     `Rainboku ${todayKey} ${difficultyLabels[activeDifficulty]}`,
     `Solved in ${formatDuration(elapsedMs)}`,
-    `Streak ${computeStats(loadStore(), todayKey).currentStreak}`,
+    `Streak ${stats.currentStreak}`,
     "Palette ROAYLGCBV"
   ].join("\n");
   try {
@@ -478,6 +507,46 @@ async function shareResult() {
   } catch {
     statusText.textContent = text;
   }
+  trackEvent("share_result", {
+    difficulty: activeDifficulty,
+    date_key: todayKey,
+    puzzle_id: activePuzzle.id,
+    elapsed_seconds: Math.floor(elapsedMs / 1000),
+    current_streak: stats.currentStreak,
+    current_streak_label: String(stats.currentStreak),
+    best_streak: stats.bestStreak,
+    streak_bucket: streakBucket(stats.currentStreak)
+  });
+}
+
+function setAnalyticsUserStats(stats) {
+  setUserStats({
+    current_streak: stats.currentStreak,
+    best_streak: stats.bestStreak,
+    total_solved: stats.totalSolved,
+    current_streak_bucket: streakBucket(stats.currentStreak),
+    best_streak_bucket: streakBucket(stats.bestStreak)
+  });
+}
+
+function trackSolved(stats) {
+  const difficultyStats = stats.byDifficulty[activeDifficulty] || {};
+  trackEvent("puzzle_solved", {
+    difficulty: activeDifficulty,
+    date_key: todayKey,
+    puzzle_id: activePuzzle.id,
+    puzzle_seed: activePuzzle.seed,
+    elapsed_seconds: Math.floor(elapsedMs / 1000),
+    conflict_count: conflictCount,
+    current_streak: stats.currentStreak,
+    current_streak_label: String(stats.currentStreak),
+    best_streak: stats.bestStreak,
+    best_streak_label: String(stats.bestStreak),
+    streak_bucket: streakBucket(stats.currentStreak),
+    total_solved: stats.totalSolved,
+    difficulty_solved_days: difficultyStats.solved || 0,
+    difficulty_solved_days_label: String(difficultyStats.solved || 0)
+  });
 }
 
 function buildColourBar() {
