@@ -147,7 +147,7 @@ h1::after {
 .daily-card {
   position: relative;
   display: grid;
-  grid-template-columns: 58px 1fr;
+  grid-template-columns: 58px minmax(0, 1fr);
   align-items: center;
   gap: 14px;
   min-height: 138px;
@@ -206,6 +206,9 @@ h1::after {
   z-index: 1;
   display: grid;
   gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .eyebrow {
@@ -221,10 +224,14 @@ h1::after {
 .daily-card strong {
   position: relative;
   z-index: 1;
+  display: block;
+  max-width: 100%;
   font-family: var(--display-font);
-  font-size: clamp(27px, 7.35vw, 52px);
-  line-height: 1;
-  white-space: nowrap;
+  font-size: clamp(25px, 6.35vw, 48px);
+  line-height: 0.98;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 .stats-grid {
