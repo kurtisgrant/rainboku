@@ -41,3 +41,19 @@ if (stopTimerIndex > loadStoreIndex || stopTimerIndex > resetElapsedIndex) {
 }
 
 console.log("Timer reset order verification passed.");
+
+const shareResultMatch = source.match(/async function shareResult\(\) \{[\s\S]*?\n\}/);
+
+if (!shareResultMatch) {
+  throw new Error("shareResult function not found");
+}
+
+if (shareResultMatch[0].includes("statusText.")) {
+  throw new Error("shareResult must not write to the game status text");
+}
+
+if (!source.includes("function copyToClipboard(text)")) {
+  throw new Error("shareResult must use the clipboard fallback helper");
+}
+
+console.log("Share status isolation verification passed.");

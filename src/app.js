@@ -517,14 +517,7 @@ async function shareResult() {
   if (!activePuzzle || !activeDifficulty || !winShown) return;
   const stats = computeStats(loadStore(), todayKey);
   const text = shareText(stats);
-  let copied = false;
-  try {
-    await navigator.clipboard.writeText(text);
-    copied = true;
-    statusText.textContent = "Copied result";
-  } catch {
-    statusText.textContent = text;
-  }
+  const copied = await copyToClipboard(text);
   sharePreview.textContent = text;
   shareStatus.textContent = copied ? "Copied to clipboard." : "Copy this result:";
   shareModal.hidden = false;
@@ -538,6 +531,37 @@ async function shareResult() {
     best_streak: stats.bestStreak,
     streak_bucket: streakBucket(stats.currentStreak)
   });
+}
+
+async function copyToClipboard(text) {
+  if (navigator.clipboard?.writeText && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // Fall through to the textarea fallback.
+    }
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.top = "0";
+  textarea.style.left = "-9999px";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  textarea.setSelectionRange(0, textarea.value.length);
+  let copied = false;
+  try {
+    copied = document.execCommand("copy");
+  } catch {
+    copied = false;
+  }
+  textarea.remove();
+  return copied;
 }
 
 function shareText(stats) {
