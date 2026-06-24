@@ -13,7 +13,6 @@ import {
   getGame,
   loadStore,
   resetGame,
-  statusForGame,
   upsertGame
 } from "./storage.js";
 import { setUserStats, streakBucket, trackEvent } from "./analytics.js";
@@ -62,6 +61,10 @@ const reelStrip = document.querySelector("#reelStrip");
 const resetModal = document.querySelector("#resetModal");
 const cancelResetButton = document.querySelector("#cancelResetButton");
 const confirmResetButton = document.querySelector("#confirmResetButton");
+const shareModal = document.querySelector("#shareModal");
+const sharePreview = document.querySelector("#sharePreview");
+const shareStatus = document.querySelector("#shareStatus");
+const closeShareButton = document.querySelector("#closeShareButton");
 const canvas = document.querySelector("#confettiCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -95,6 +98,9 @@ confirmResetButton.addEventListener("click", () => {
   startGame(difficulty, { skipSave: true });
 });
 shareButton.addEventListener("click", shareResult);
+closeShareButton.addEventListener("click", () => {
+  shareModal.hidden = true;
+});
 
 document.addEventListener("pointerdown", (event) => {
   if (!wheel.classList.contains("visible")) return;
@@ -122,9 +128,21 @@ function renderDashboard() {
   totalSolved.textContent = String(stats.totalSolved);
   Object.keys(difficultyLabels).forEach((difficulty) => {
     const status = document.querySelector(`[data-status-for="${difficulty}"]`);
-    status.textContent = statusForGame(getGame(store, todayKey, difficulty));
+    const bestMs = stats.byDifficulty[difficulty]?.bestMs || null;
+    status.textContent = dashboardStatusForGame(getGame(store, todayKey, difficulty), bestMs);
     renderDifficultyDots(difficulty, stats.byDifficulty[difficulty]?.solved || 0);
   });
+}
+
+function dashboardStatusForGame(game, bestMs) {
+  const bestText = bestMs ? `Best ${formatDuration(bestMs)}` : "";
+  let status = "Not started";
+  if (game?.solved) {
+    status = `Solved ${formatDuration(game.elapsedMs || 0)}`;
+  } else if ((game?.board || []).some((value) => value !== 0)) {
+    status = "In progress";
+  }
+  return bestText ? `${status} · ${bestText}` : status;
 }
 
 function renderDifficultyDots(difficulty, solvedCount) {
@@ -163,6 +181,7 @@ function showDashboard() {
 
 function startGame(difficulty, options = {}) {
   if (!options.skipSave) saveActiveGame();
+  stopTimer();
   store = loadStore();
   activeDifficulty = difficulty;
   activePuzzle = generateDailyPuzzle(todayKey, difficulty);
@@ -497,18 +516,18 @@ function saveActiveGame() {
 async function shareResult() {
   if (!activePuzzle || !activeDifficulty || !winShown) return;
   const stats = computeStats(loadStore(), todayKey);
-  const text = [
-    `Rainboku ${todayKey} ${difficultyLabels[activeDifficulty]}`,
-    `Solved in ${formatDuration(elapsedMs)}`,
-    `Streak ${stats.currentStreak}`,
-    "Palette ROYLGCBVP"
-  ].join("\n");
+  const text = shareText(stats);
+  let copied = false;
   try {
     await navigator.clipboard.writeText(text);
+    copied = true;
     statusText.textContent = "Copied result";
   } catch {
     statusText.textContent = text;
   }
+  sharePreview.textContent = text;
+  shareStatus.textContent = copied ? "Copied to clipboard." : "Copy this result:";
+  shareModal.hidden = false;
   trackEvent("share_result", {
     difficulty: activeDifficulty,
     date_key: todayKey,
@@ -519,6 +538,28 @@ async function shareResult() {
     best_streak: stats.bestStreak,
     streak_bucket: streakBucket(stats.currentStreak)
   });
+}
+
+function shareText(stats) {
+  const difficulty = difficultyLabels[activeDifficulty];
+  const minutes = formatDurationWords(elapsedMs);
+  const streak = stats.currentStreak === 1 ? "1 day" : `${stats.currentStreak} days`;
+  return [
+    "Rainboku",
+    "🟥🟧🟨🟩🟦🟪",
+    `I finished today's ${difficulty} Rainboku in ${minutes}.`,
+    `Streak: ${streak}`,
+    "Play: https://rainboku.com"
+  ].join("\n");
+}
+
+function formatDurationWords(ms) {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  if (minutes === 0) return `${seconds} second${seconds === 1 ? "" : "s"}`;
+  if (seconds === 0) return `${minutes} minute${minutes === 1 ? "" : "s"}`;
+  return `${minutes} minute${minutes === 1 ? "" : "s"} ${seconds} second${seconds === 1 ? "" : "s"}`;
 }
 
 function setAnalyticsUserStats(stats) {

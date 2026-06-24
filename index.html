@@ -176,6 +176,17 @@
     </div>
   </div>
 
+  <div class="modal-backdrop" id="shareModal" hidden>
+    <div class="modal share-modal" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+      <h2 id="shareTitle">Result copied</h2>
+      <p id="shareStatus">Copied to clipboard.</p>
+      <pre id="sharePreview" class="share-preview"></pre>
+      <div class="modal-actions">
+        <button class="ghost-button subtle" id="closeShareButton" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
   <canvas class="confetti" id="confettiCanvas" aria-hidden="true"></canvas>
   <script type="module" src="./src/app.js"></script>
 </body>
