@@ -42,6 +42,7 @@ let colourBarStart = 0;
 let confettiFrame = null;
 let particles = [];
 const colourBarCycleMs = 12630;
+const dragCommitDistance = 16;
 
 const dashboardScreen = document.querySelector("#dashboardScreen");
 const gameScreen = document.querySelector("#gameScreen");
@@ -327,7 +328,8 @@ function closeWheel() {
 function handleDragMove(event) {
   if (!dragState || event.pointerId !== dragState.pointerId) return;
   const distance = Math.hypot(event.clientX - dragState.startX, event.clientY - dragState.startY);
-  dragState.moved = dragState.moved || distance > 8;
+  dragState.moved = dragState.moved || distance > dragCommitDistance;
+  if (!dragState.moved) return;
   const index = optionIndexAtPoint(event.clientX, event.clientY);
   setWheelHover(index);
   setPreview(index);
@@ -337,7 +339,7 @@ function handleDragEnd(event) {
   window.removeEventListener("pointermove", handleDragMove);
   if (!dragState || event.pointerId !== dragState.pointerId) return;
   const index = optionIndexAtPoint(event.clientX, event.clientY);
-  if (index !== null) {
+  if (dragState.moved && index !== null) {
     commitOption(index);
     return;
   }
