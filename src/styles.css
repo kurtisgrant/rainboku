@@ -342,7 +342,7 @@ h1::after {
 
 .difficulty-button[data-difficulty="medium"] {
   --accent: #ff7f00;
-  --accent-2: #ffbf00;
+  --accent-2: #ff4fa3;
   --accent-3: #e32636;
   --accent-wash: rgba(255, 127, 0, 0.12);
   --accent-shadow: rgba(255, 127, 0, 0.3);

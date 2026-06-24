@@ -1,8 +1,8 @@
 export const colours = [
   { name: "Red", hex: "#e32636" },
   { name: "Orange", hex: "#ff7f00" },
-  { name: "Amber", hex: "#ffbf00" },
-  { name: "Yellow", hex: "#fff200" },
+  { name: "Pink", hex: "#ff4fa3" },
+  { name: "Yellow", hex: "#ffd21a" },
   { name: "Lime", hex: "#7fff00" },
   { name: "Green", hex: "#00a651" },
   { name: "Cyan", hex: "#00bcd4" },
